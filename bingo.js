@@ -77,15 +77,19 @@ function siguienteTurno() {
     numerosGenerados.push(numeroAleatorio);
     document.getElementById('numeroAleatorio').innerText = 'Número generado: ' + numeroAleatorio;
     marcarNumeroEnCartones(numeroAleatorio);
-    // Actualiza los puntajes en tiempo real
-    for (var i = 0; i < nombres.length; i++) {
-        var nombre = document.getElementById('carton' + (i + 1)).getElementsByTagName('h2')[0];
-        nombre.textContent = nombres[i] + ' - Puntaje: ' + puntajes[i];
-    }
     if (comprobarGanador() || ++turnos >= 50) { // Incrementa los turnos y verifica si se alcanzaron los 25 turnos ahora 50 psra verificar
+        victorias[turnoActual]++; // Incrementa las victorias del jugador ganador
+        guardarVictorias(); // Guarda las victorias en localStorage
         mostrarVista3();
+    } else {
+        // Actualiza los puntajes y las victorias
+        for (var i = 0; i < nombres.length; i++) {
+            var nombre = document.getElementById('carton' + (i + 1)).getElementsByTagName('h2')[0];
+            nombre.textContent = nombres[i] + ' - Puntaje: ' + puntajes[i] + ' - Victorias: ' + victorias[i];
+        }
     }
 }
+
 
 
 
@@ -101,7 +105,7 @@ function comprobarGanador() {
 }
 
 
-// Inicializa una matriz para cada jugador que registra qué líneas han sido completadas
+// Inicializa una matriz para verificar las líneas completadas ????????????
 var lineasCompletadas = [
     { horizontales: [], verticales: [], diagonalIzq: false, diagonalDer: false },
     { horizontales: [], verticales: [], diagonalIzq: false, diagonalDer: false },
@@ -256,5 +260,5 @@ function cargarPuntajes() {
     puntajes = JSON.parse(localStorage.getItem('puntajes')) || [0, 0, 0, 0];
 }
 
-// Carga los puntajes cuando se carga la página
+// para cargar punt al cargar pag
 window.onload = cargarPuntajes;
